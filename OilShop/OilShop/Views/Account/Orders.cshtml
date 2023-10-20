@@ -1,0 +1,226 @@
+﻿@model IEnumerable<OrderListViewModel>;
+@using Newtonsoft.Json
+<title>замовлення</title>
+
+<link rel="stylesheet" href="/css/orderlist.css">
+@if (Model.Count() != 0)
+{
+
+    <ul class="order-list ng-star-inserted" style="margin: 15px; list-style-type: none;min-height:400px">
+        @foreach (var item in Model)
+        {
+            <li class="order ng-star-inserted">
+                <div class="order-heading">
+                    <div class="order-heading__decoration" style="background-color:#0044cc"></div>
+                    <div class="order-heading__flex">
+                        <div class="order-heading__status">
+                            <a href="/orders/@item.Id">
+                                <p class="order-heading__label">
+                                    № @item.Id від
+                                    @item.Date
+                                </p>
+                            </a>
+                            <p class="order-heading__value">
+                                @item.Status
+                            </p>
+                        </div>
+
+                        <div class="order-heading__price ng-star-inserted">
+                            <p class="order-heading__label">
+                                Сума замовлення
+                            </p>
+                            <p class="order-heading__value" name="totalprice">
+                                0 ₴
+                            </p>
+                        </div>
+
+                        <img name="shevron" class="order-heading__chevron" src="~/img/Antu_arrow-right.svg">
+
+                    </div>
+                </div>
+
+                <div id="divitems" style="display:none!important">
+                    <div class="order-details" style="width:  100%;">
+                        <div class="order-details__goods">
+                            <div class="order-details__header">
+                                <h4 class="order-details__label"> Товари </h4>
+                                <ul>
+                                    @foreach (var oils in item.Details)
+                                    {
+                                    <li class="ng-star-inserted">
+                                        <div class="order-tile">
+                                            <a apprzroute="" class="order-tile__title js-product-title" href="/oil/details/@oils.Id">
+                                                <figure class="order-tile__figure" style="margin-left: 0px;">
+                                                    <span class="order-tile__picture">
+                                                        @if (!@oils.Image.Contains("https"))
+                                                        {
+                                                            <img src="/@oils.Image"
+                                                                 alt="@oils.OilName @oils.Capacity л image">
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="@oils.Image"
+                                                                 alt="@oils.OilName @oils.Capacity л image">
+                                                        }
+                                                    </span>
+                                                    <figcaption style="text-decoration:none!important">
+                                                        @oils.OilName @oils.Capacity л
+                                                    </figcaption>
+                                                </figure>
+                                            </a>
+
+                                            <dl class="order-tile__options" style="font-size: 14px;">
+                                                <div class="order-tile__option js-product-price">
+                                                <dt class="order-tile__label">
+                                                    Ціна
+                                                </dt>
+                                                <dd class="order-tile__digit">
+                                                    <span class="order-tile__price">
+                                                        @oils.Price ₴
+                                                    </span>
+
+                                                </dd>
+                                        </div>
+                                        <div class="order-tile__option order-tile__option--quantity js-product-quantity">
+                                            <dt class="order-tile__label">
+                                                Кількість
+                                            </dt>
+                                            <dd class="order-tile__digit">
+                                                @oils.Count
+                                            </dd>
+                                        </div>
+                                        <div class="order-tile__option js-product-amount">
+                                            <dt class="order-tile__label">
+                                                Сумма
+                                            </dt>
+                                            <dd class="order-tile__digit">
+                                                @{var sum = oils.Count * oils.Price;}
+                                                <span class="order-tile__price">
+                                                    @sum ₴
+                                                </span>
+
+                                            </dd>
+                                        </div>
+                                        </dl>
+</div>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </li>
+        }
+    </ul>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+            var data =@Html.Raw(JsonConvert.SerializeObject(this.Model));
+            for (var i = 0; i < data.length; i++) {
+                var totalprice = 0;
+                data[i].Details.forEach(item => {
+                    totalprice+=item.Price * item.Count;
+                });
+                document.getElementsByName("totalprice")[i].innerHTML = totalprice + " ₴";
+            }
+            document.getElementsByName("shevron").forEach(element => {
+                element.setAttribute("style", "transform: rotate(" + 90 + "deg)");
+            });
+        });
+
+        document.getElementsByName("shevron").forEach(element => {
+            element.addEventListener("click", () => {
+                if (element.style.transform == "rotate(90deg)") {
+                    element.setAttribute("style", "transform: rotate(" + 270 + "deg)");
+                    element.parentNode.parentNode.parentNode.querySelector("#divitems").style = "display:block"
+                }
+                else {
+                    element.setAttribute("style", "transform: rotate(" + 90 + "deg)");
+                    element.parentNode.parentNode.parentNode.querySelector("#divitems").style = "display:none"
+
+                }
+            });
+        });
+    </script>
+}
+else
+{
+    <div class="flex-column text-center " style="margin-bottom:40px">
+        <img style="width:100%;max-width:700px" alt="nothing was found" src="~/img/no_orders.jpg" />
+        <h4 class="col p-2 mt-5">На жаль, ми нічого не знайшли </h4>
+    </div>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<style>
+        * {
+            font-family: 'poppins', sans-serif;
+        }
+
+        td {
+            padding: .5rem 0rem;
+            font-size: .9rem;
+            color: #222;
+        }
+
+        tr {
+            text-align: left;
+        }
+    </style>
+
+    @if (Model.Count() != 0)
+    {
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table width="100%" class="table table-striped" id="table1">
+                        <thead>
+                            <tr>
+                                <th>Номер</th>
+                                <th>Статус</th>
+                                <th>Дата</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="tb1">
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td ><a href="/orders/@item.Id">@item.Id</a></td>
+                                    <td>@item.Status</td>
+                                    <td>@item.Date</td>
+                                </tr>
+                            }
+
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="flex-column text-center ">
+            <img style="width:100%;max-width:800px" alt="no orders" src="~/img/market-cart-race.webp" />
+            <h4 class="col p-2 mt-5">Ще нема замовлень</h4>
+        </div>
+        <div style="height:100PX"></div>
+
+    }*@

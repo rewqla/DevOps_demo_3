@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bgm" style="border-bottom: 1px solid #dee2e6;font-size:16px">
+        <a class="navbar-brand" href="/">  <img src="~/img/fuchslogo.png" style="height:50px" /></a>
+
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" asp-action="index" asp-controller="oil" asp-route-Page="1">Наші товари</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">Про нас</a>
+                </li>
+
+                @if (User.IsInRole("Admin"))
+                {
+    <li class="nav-item">
+        <a class="nav-link" href="/admin/goods">Адмін</a>
+    </li>
+}
+            </ul>
+            <form class="navbar-form navbar-right" asp-action="index" asp-controller="oil" asp-route-Page="1">
+                <div class="input-group">
+                    <input type="text" name="SearchData" class="form-control" style="min-width:250px" placeholder="Пошук">
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default clcwb">
+                            <img src="~/img/search.svg" alt="search" class="usImg" />
+                        </button>
+                    </span>
+                </div>
+            </form>
+            <div>
+
+                <div class="navbar-text dropdown">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+        <button class="btn" style="align-items: center;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <img src="/img/user.svg" alt="user" class="usImg" /><span>@User.Identity.Name</span>
+        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="/account/personal-info">Налаштування</a>
+                            <a class="dropdown-item" href="/account/orders">Замовлення</a>
+                            <div class="dropdown-divider"></div>
+                            @using (Html.BeginForm("logout", "account", FormMethod.Post, new { id = "logoutForm", @class = "form-inline my-2 my-lg-0" }))
+                            {
+            @Html.AntiForgeryToken()
+                                <a onclick="document.getElementById('logoutForm').submit();" class="dropdown-item" href="#">Вихід </a>}
+                        </div>}
+                    else
+                    {
+        <a class="nav-link" href="/account/login"><img src="/img/user.svg" alt="user" class="usImg" />Мій профіль</a>}
+
+                </div>
+                <span class="navbar-text">
+                    @using (Html.BeginForm("index", "cart"))
+                    {
+        @Html.Hidden("Email", User.Identity.Name)
+                        <button type="submit" class="nav-link" style="border: none; background: none; outline: none; "><img src="/img/shopping-cart.svg" alt="shopping cart" class="usImg" /></button>}
+                </span>
+            </div>
+        </div>
+    </nav>
+    <noscript>
+
+        <div class="text-center m-1 p-3" style="background-color:gainsboro">
+            <div class="">
+                <div class="">
+                    На жаль, схоже, у вашому браузері відключено JavaScript. Для повноцінного використання данної сторінки
+                </div>
+                <div class="">Необхідно включити JavaScript</div>
+            </div>
+        </div>
+    </noscript>
+    <div class="p-2">
+        @RenderBody()
+    </div>
+
+    <div id="footer" class="margin-top-55">
+        <!-- Main -->
+        <div class="containerf">
+            <div class="row" style="justify-content: space-between; display: flex!important;">
+                <div class="col-md-5 col-sm-6">
+                    <h4>Fuchs</h4>
+                    <p style="text-align:justify">
+                        FUCHS - всесвітньо відома в галузі виробництва мастильних матеріалів фірма, яка стала однією із
+                        лідерів в галузі виробництва мастильних матеріалів завдяки високій якості і широкому асортименту - від
+                        стандартних продуктів до спеціальних мастильних матеріалів, створених на замовлення.
+                    </p>
+                </div>
+
+
+
+                <div class="col-md-3  col-sm-12" style="min-width: 300px;">
+                    <h4>Зв'язатися з нами м. Рівне</h4>
+                    <div class="text-widget">
+                        <span style="color: black;"> вул. Князя Володимира 110</span> <br>
+                        <span style="color: black;">+380673244332</span><br>
+                        <span style="color: black;"> fuchsrv@gmail.com</span><br>
+                    </div>
+                    <a href="https://www.facebook.com/FUCHSUkraine/" target="_blank"><i class="fab fa-facebook-f iconl"></i></a>
+                    <a href="https://www.xing.com/pages/fuchspetrolubag" target="_blank"><i class="fab fa-xing iconl" style="margin-left:10px"></i></a>
+                    <a href="https://www.linkedin.com/company/fuchs-ukraine/" target="_blank"><i class="fab fa-linkedin-in iconl" style="margin-left:10px"></i></a>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="copyrights"> © FUCHS Rivne 2021. Всі права захищено</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

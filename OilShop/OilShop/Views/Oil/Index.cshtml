@@ -1,0 +1,56 @@
+﻿@model OilViewModelList
+@using Microsoft.AspNetCore.Http
+
+<title>Наші товари</title>
+
+@if (Model.List.Count() == 0)
+{
+    <div class="flex-column text-center" style="margin-top:100px;margin-bottom:100px">
+        <img style="width:100%;max-width:700px" alt="nothing was found" src="~/img/ufo.jpg" />
+        <h4 class="col p-2 mt-5">На жаль, ми нічого не знайшли </h4>
+    </div>
+}
+
+else
+{
+    <div class="row d-flex justify-content-around p-3">
+        @foreach (var p in Model.List)
+        {
+            <div class="card mb-3" style="width: 20rem;">
+                <a asp-controller="oil" asp-action="details" asp-route-id="@p.Id" asp-route-Email="@User.Identity.Name">
+                    <img class="card-img-top" src="@p.Image" alt="@p.Name card">
+                </a>
+                <div class="card-body">
+                    <a asp-controller="oil" asp-action="details" asp-route-id="@p.Id" asp-route-Email="@User.Identity.Name">
+                        <h4 class="card-title text-dark">@p.Name @p.OilCapacity л</h4>
+                    </a>
+                    <h5 class="card-title text-dark">@p.Price ₴</h5>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (Model.MaxPage != 1)
+    {
+        <nav class="">
+            <ul class="pagination justify-content-center">
+                @{int Page = Model.Page; }
+                <li class="page-item @(Page == 1? "disabled":"")">
+                    <a class="page-link" asp-action="index" asp-controller="oil"
+                       asp-route-Page="@(Page - 1)" tabindex="-1">Попередня</a>
+                </li>
+                @for (int i = 1; i < Model.MaxPage + 1; i++)
+                {
+                    <li class="page-item @(Page == i ? "active": "" )">
+                        <a class="page-link" asp-action="index" asp-controller="oil"
+                           asp-route-Page="@i">@i <span class="sr-only">(current)</span></a>
+                    </li>
+                }
+                <li class="page-item @(Page == Model.MaxPage? "disabled":"")">
+                    <a class="page-link" asp-action="index" asp-controller="oil" asp-route-Page="@(Page+1)">Наступна</a>
+                </li>
+            </ul>
+        </nav>
+    }
+}
+

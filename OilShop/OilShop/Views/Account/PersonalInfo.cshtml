@@ -1,0 +1,112 @@
+﻿@model PersonalInfoViewModel;
+<title>Особисті дані</title>
+<link rel="stylesheet" href="/css/personalinfo.css">
+
+    
+<div class="tab-content p-4 p-md-5" id="v-pills-tabContent" style="">
+    <section class="container-fluid pt-3 pb-3">
+        @if (TempData["message"] != null)
+        {
+            <div class="alert alert-primary" role="alert">@TempData["message"]</div>
+        }
+    </section>
+
+    <div id="dwui" class="tab-pane fade show active infoborders" role="tabpanel"
+         aria-labelledby="account-tab">
+
+        <div class="personal-section__header">
+            <h3 class="personal-section__heading">
+                <img alt="user-flat" src="/img/user-flat.svg" aria-hidden="true" height="24" width="24" style="margin-right: 5px;" />
+                Особисті дані
+            </h3>
+            <button id="btnEdit"
+                    class=" button button--medium button--link button--with-icon personal-section__edit ng-star-inserted">
+                <img alt="edit" src="/img/edit.svg" aria-hidden="true" height="24" width="24" style="margin-right: 5px; "><span class="personal-section__edit-text">
+                    Редагувати
+                </span>
+            </button>
+        </div>
+
+        <form action="ChangeUserInfo" id="formdata" method="post">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div name="usinfo" class="form-group">
+                        <label>Прізвище та ім'я або назва підприємства</label>
+                        <input asp-for="FullName" disabled type="text" class="form-control" value="@Model.FullName">
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Мова</label>
+                        <select disabled class="form-control" id="exampleFormControlSelect1">
+                            <option>Українська</option>
+                            <option>Англійська</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div name="usinfo" class="form-group">
+                        <label>Пошта</label>
+                        <input asp-for="Email" disabled type="text" class="form-control" value="@Model.Email">
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div name="usinfo" class="form-group">
+                        <label>Номер телефону</label>
+                        <input asp-for="PhoneNumber" disabled type="text" class="form-control" value="@Model.PhoneNumber">
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+
+            </div>
+            <div id="dwb">
+                <button id="btns" class="btn btn-primary " hidden>Оновити</button>
+                <button id="mdb" style="margin-left:15px" class="btn btn-light " hidden>Відмінити</button>
+            </div>
+        </form>
+
+    </div>
+    <section style="padding-top: 24px;margin-bottom:40px">
+        <div>
+            <button class="button button--medium button--link buttonlast"
+                    onclick="document.getElementById('changepasswordmodal').style.display='block'" type="button">
+                Змінити
+                пароль
+            </button><br>
+        </div>
+    </section>
+</div>
+
+<div id="changepasswordmodal" class="modalm">
+    <form id="formpassword" class="modalm-content animate" asp-controller="account" asp-action="RequestPasswordReset">
+        <div class="containerm justify-content-around" id="divpas">
+            <label><b>Поточний пароль</b></label>
+            <div name="pasinfo">
+                <input asp-for="oldPassword" type="password" id="oldPassword" class="inptp mg24" placeholder="Введіть поточний пароль">
+                <i class="far fa-eye-slash" id="toggleOldPassword" style=" margin-left: -35px; cursor: pointer;"></i>
+                <span class="text-danger">‎‏‏‎ ‎</span>
+            </div>
+            <div name="pasinfo">
+                <label><b>Новий пароль</b></label>
+                <input asp-for="newPassword" type="password" id="newPassword" class="inptp mg24" placeholder="Введіть новий пароль">
+                <i class="far fa-eye-slash" id="toggleNewPassword" style=" margin-left: -35px; cursor: pointer;"></i>
+                <span class="text-danger">‎‏‏‎ ‎</span>
+            </div>
+            <div name="pasinfo">
+                <label><b>Новий пароль ще раз</b></label>
+                <input asp-for="confirmPassword" type="password" id="confirmPassword" class="inptp mg24" placeholder="Повторіть пароль">
+                <i class="far fa-eye-slash" id="toggleConfirmPassword" style=" margin-left: -40px; cursor: pointer;"></i>
+                <span class="text-danger">‎‏‏‎ ‎ &#8203; </span>
+            </div>
+            <div>
+                <button class="btn btn-primary fr">Оновити</button>
+                <button id="closeModal" class="btn btn-light fr">Відмінити</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="~/js/personalinfo.js"></script>

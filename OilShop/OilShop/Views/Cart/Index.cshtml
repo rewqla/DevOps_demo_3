@@ -1,0 +1,83 @@
+﻿@model List<CartViewModel>
+
+<title>Ваша корзина</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<div class="container" style="min-height:500px">
+    @if (Model != null)
+    {
+        @using (@Html.BeginForm("checkout", "order", FormMethod.Get))
+        {
+            <table id="cart" class="table table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th style="width:8%">Номер</th>
+                        <th style="width:50%">Товар</th>
+                        <th style="width:14%">Ціна</th>
+                        <th style="width:8%">кількість</th>
+                        <th style="width:10%"></th>
+                    </tr>
+                </thead>
+                @{int counter = 1; int maxCount = 20;}
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    @Html.HiddenFor(model => Model[i].Id)
+                    @Html.HiddenFor(model => Model[i].MaxCount)
+                    <tbody>
+                        <tr>
+                            <td data-th="Number">@counter</td>
+
+                            <td data-th="Product">
+                                <div class="row">
+                                    <div class="col-sm-2 hidden-xs"><img alt="@Model[i].OilName" src="@Model[i].Image" class="img-responsive" style="height: 100px;" /></div>
+                                    <div class="col-sm-10">
+                                        <a asp-controller="oil" asp-action="details" asp-route-id="@Model[i].Id" asp-route-email="@User.Identity.Name"><h4 class="nomargin text-dark">@Model[i].OilName @Model[i].Capacity л</h4></a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td data-th="Price">@Model[i].Price₴</td>
+                            <td data-th="Quantity">
+                                @if (Model[i].MaxCount < 20) { maxCount = Model[i].MaxCount; }
+                                <div class="row align-items-center">
+                                    @Html.EditorFor(model => Model[i].Count, new { htmlAttributes = new { @class = "form-control text-center inp_num", @type = "number", @min = "0", @max = @maxCount, @value = "1", style = "max-width:70px" } })
+                                    @if (Model[i].MaxCount < 20)
+                                    {
+                                        <img src="~/img/Icon-round-Question_mark.svg.png" data-container="body" data-toggle="popover" data-placement="bottom" data-content="На жаль, відстня більша кількість товару в наявності. Вибачте за незручності." style="height:20px;margin-left:7px" />
+                                    }
+                                </div>
+                            </td>
+
+                            <td class="actions">
+                                <a asp-action="deletefromcart" asp-controller="cart" asp-route-OilId="@Model[i].Id"><img alt="trash" src="/img/trash.svg" style="height: 30px;" /></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    { counter++; maxCount = 20; }
+                }
+                <tfoot>
+                    <tr>
+
+                        <td colspan="2" class="hidden-xs"></td>
+                        <td class="hidden-xs text-center"><strong id="totalPrice">Всього 0₴</strong></td>
+                        <td><button id="checkout" type="submit" class="btn btn-success ">Оформити замовлення </button></td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div style="height:50PX"></div>
+        }
+    }
+    else
+    {
+        <div class="flex-column text-center " style="margin-top:40px;margin-bottom:80px">
+            <img alt="empty cart" style="height:350px" src="~/img/modal-cart-dummy.svg" />
+            <h4 class="col p-2 mt-5">Ваш кошик пустий</h4>
+        </div>
+
+    }
+</div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    })
+</script>
+<script src="~/js/cart.js"></script>

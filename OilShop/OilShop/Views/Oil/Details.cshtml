@@ -1,0 +1,97 @@
+﻿@model OilFullInfoViewModel
+<title>@Model.Name</title>
+<link rel="stylesheet" href="~/css/oildetails.css">
+<div id="mainDiv">
+    <div class="item" id="catalogElement">
+
+        <div id="tableContainer">
+            <div class="column" id="elementContainer">
+                <div id="browse" class="mainContainer">
+                    <div class="col">
+                        <div id="pictureContainer" style="overflow: hidden; width: 100%;margin: 20px 0">
+                            <img style="height:300px" title="" alt="@Model.Name" src=@Model.PhotoBase64>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="description">
+                            <h1 data-product="115984" class="changeName b1c-name">@Model.Name</h1>
+                            <div class="heading"><strong>Об'єм:</strong> @Model.Capacity л</div>
+                            <div class="heading"><strong>Виробник:</strong> @Model.Manafacturer</div>
+                            <div class="heading"><strong>Ціна:</strong> @Model.Price ₴</div>
+                            <div class="heading"><strong>Тип масла:</strong> @Model.Type</div>
+                            <div class="heading"><strong>Застосування:</strong> @Model.Applying</div>
+                        </div>
+
+                        @if (Model.Count > 0)
+                        {
+                            <div class="heading">В наявності</div>
+                            @if (ViewBag.IsInCart != true)
+                            {
+                                @using (Html.BeginForm("addtocart", "cart"))
+                                {
+                                    @Html.Hidden("OilId", Model.Id)
+                                    @Html.Hidden("Email", User.Identity.Name)
+                                    <button id="addCart12" class="addCart changeID changeCart" type="submit">
+                                        <img class="icon" style="margin-right:5px;padding-bottom:8px" src="~/img/incart.png">В
+                                        кошик
+                                    </button>
+                                }
+                            }
+                            else
+                            {
+                                <div class="two-button mt-2">
+                                    @using (Html.BeginForm("index", "cart"))
+                                    {
+                                        @Html.Hidden("Email", User.Identity.Name)
+                                        <button id="addCart12" class="addCart changeID changeCart" type="submit">
+                                            <img class="icon" style="margin-right:5px;padding-bottom:8px" src="~/img/inStock.png">В
+                                            кошику
+                                        </button>
+
+                                    }
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="heading">Товар тимчасово відсутній</div>
+                            <button type="submit"  class="btn-lg btn-decoration">Повідомити про наявність</button>
+                        }
+                    </div>
+                </div>
+                <div id="detailText">
+                    <div class="heading">Опис товару</div>
+                    <div>
+                        <p style="font-size: large;">
+                            &nbsp;&nbsp;&nbsp;@Model.Description
+                        </p>
+
+                        <h3 style=" font-size: 1.17em"><strong>Специфікації</strong></h3>
+                        <ul>
+                            @foreach (var item in Model.Specifications)
+                            {
+                                <li style="font-size: 16px;">@item.Name</li>
+                            }
+
+                        </ul>
+                        <h3 style=" font-size: 1.17em"><strong>Допуски </strong></h3>
+                        <ul>
+                            @foreach (var item in Model.Tolerances)
+                            {
+                                <li style="font-size: 16px;">@item.Name</li>
+                            }
+                        </ul>
+                        <h3 style=" font-size: 1.17em"><strong>Рекомендації Fuchs</strong>&nbsp;</h3>
+                        <ul>
+                            @foreach (var item in Model.Recommndations)
+                            {
+                                <li style="font-size: 16px;">@item.Name</li>
+                            }
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

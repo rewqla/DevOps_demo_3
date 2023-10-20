@@ -1,0 +1,110 @@
+﻿@using Newtonsoft.Json
+<title>Частини адмін</title>
+<div class="form-group" style="margin-top:10px">
+    <div class="col-md-10">
+        <select class="form-control" style="max-width:200px">
+            @foreach (var item in ViewBag.Items)
+            {
+                <option>
+                    @item
+                </option>
+            }
+        </select>
+    </div>
+</div>
+
+<div class="p-4" style=" margin-bottom: 40px;">
+    @if (TempData["message"] != null)
+    {
+        <div class="alert alert-primary" role="alert">@TempData["message"]</div>
+    }
+    <table width="100%" class="table table-striped " id="table1">
+        <thead>
+            <tr>
+                <th>Номер</th>
+                <th>Назва</th>
+                <th>Дія</th>
+            </tr>
+
+        </thead>
+
+        <tbody id="tb1">
+            @foreach (var item in ViewBag.Manafacturers)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>
+
+                        @item.Country
+
+                    </td>
+                    <td><form action='deletemanafacturer' method='post'>
+                        <button type='submit' class='btn btn-link' style='padding: 0'>Видалити</button>
+                        <input id='Id' name='Id' type='hidden' value= @item.Id>
+                        </form></td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.querySelector("select").addEventListener("change", function () {
+        var value = document.querySelector("select").value;
+            document.querySelector("tbody").innerHTML = "";
+
+        if (value == "Рекомендація") {
+            var data = @Html.Raw(JsonConvert.SerializeObject(@ViewBag.Recommendations));
+            data.forEach(number => {
+                document.querySelector("tbody").insertRow().innerHTML = "<tr><td>" + number.Id + "</td><td>" + number.Name + "</td>" + "<td><form action='deleterecommendation' method='post'>  <button type='submit' class='btn btn-link' style='padding: 0'>Видалити</button><input id='Id' name='Id' type='hidden' value=" + number.Id + "></form></td></tr>";
+            });
+        }
+        else {
+            if (value == "Специфікація") {
+                var data = @Html.Raw(JsonConvert.SerializeObject(@ViewBag.Specifications));
+                data.forEach(number => {
+                    document.querySelector("tbody").insertRow().innerHTML = "<tr><td>" + number.Id + "</td><td>" + number.Name + "</td>" + "<td><form action='deletespecification' method='post'>  <button type='submit' class='btn btn-link' style='padding: 0'>Видалити</button><input id='Id' name='Id' type='hidden' value=" + number.Id + "></form></td></tr>";
+                });
+            }
+            else {
+                if (value == "Тип") {
+                    var data = @Html.Raw(JsonConvert.SerializeObject(@ViewBag.Types));
+                    data.forEach(number => {
+                        document.querySelector("tbody").insertRow().innerHTML = "<tr><td>" + number.Id + "</td><td>" + number.Name + "</td>" + "<td><form action='deletetype' method='post'>  <button type='submit' class='btn btn-link' style='padding: 0'>Видалити</button><input id='Id' name='Id' type='hidden' value=" + number.Id +"></form></td></tr>";
+                    });
+                }
+                else {
+                    if (value == "Застосування") {
+                        var data = @Html.Raw(JsonConvert.SerializeObject(@ViewBag.Applyings));
+                        data.forEach(number => {
+                            document.querySelector("tbody").insertRow().innerHTML = "<tr><td>" + number.Id + "</td><td>" + number.Name + "</td>" + "<td><form action='deleteapplying' method='post'>  <button type='submit' class='btn btn-link' style='padding: 0'>Видалити</button><input id='Id' name='Id' type='hidden' value=" + number.Id + "></form></td></tr>";
+                        });
+                    }
+                    else {
+                        if (value == "Об'єм") {
+                             var data = @Html.Raw(JsonConvert.SerializeObject(@ViewBag.Capacities));
+                             data.forEach(number => {
+                                 document.querySelector("tbody").insertRow().innerHTML = "<tr><td>" + number.Id + "</td><td>" + number.Capacity + "</td>" + "<td><form action='deletecapacity' method='post'>  <button type='submit' class='btn btn-link' style='padding: 0'>Видалити</button><input id='Id' name='Id' type='hidden' value=" + number.Id +"></form></td></tr>";
+                             });
+                        }
+                        else {
+                            if (value == "Виробник") {
+                                var data = @Html.Raw(JsonConvert.SerializeObject(@ViewBag.Manafacturers));
+                                data.forEach(number => {
+                                    document.querySelector("tbody").insertRow().innerHTML = "<tr><td>" + number.Id + "</td><td>" + number.Country + "</td>" + "<td><form action='deletemanafacturer' method='post'>  <button type='submit' class='btn btn-link' style='padding: 0'>Видалити</button><input id='Id' name='Id' type='hidden' value=" + number.Id +"></form></td></tr>";
+                                });
+                            }
+                            else {
+                                var data = @Html.Raw(JsonConvert.SerializeObject(@ViewBag.Tolerances));
+                                data.forEach(number => {
+                                    document.querySelector("tbody").insertRow().innerHTML = "<tr><td>" + number.Id + "</td><td>" + number.Name + "</td>" + "<td><form action='deletetolerance' method='post'>  <button type='submit' class='btn btn-link' style='padding: 0'>Видалити</button><input id='Id' name='Id' type='hidden' value=" + number.Id +"></form></td></tr>";
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>

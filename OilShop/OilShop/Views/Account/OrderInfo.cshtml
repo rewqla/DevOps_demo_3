@@ -1,0 +1,108 @@
+﻿@model OrderViewModel;
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" />
+<link href="/css/orderinfo.css" rel="stylesheet" />
+<title>замовлення №@Model.Id</title>
+<div class="container-fluid d-flex justify-content-center" style="margin-top: 50px; margin-bottom: 100px">
+    <div class="card card-1">
+        <div class="card-header text-center bg-white" style="height: 80px;">
+            <div class="col my-auto" style="top: 30%;">
+                <h4 class="mb-0">Замовлення №@Model.Id</h4>
+            </div>
+        </div>
+
+        <div class="card-body" style="padding-top: 0.75rem!important;">
+            <span style="margin-top: -10px;"><b>Статус замовлення: </b>@Model.Status</span>
+            <div class="row">
+                <div class="col">
+                    @for (int i = 0; i < Model.Items.Length; i++)
+                    {
+
+                        <div class="card card-2" style="margin-top: 10px;">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="sq align-self-center ">
+                                        <img class="img-fluid my-auto align-self-center mr-2 mr-md-4 pl-0 p-0 m-0"
+                                             src=@Model.Items[i].Image width="135" height="135" />
+                                    </div>
+                                    <div class="media-body my-auto text-right">
+                                        <div class="row my-auto flex-column flex-md-row">
+                                            <div class="col my-auto alignname" >
+                                                <a href="/oils/details/@Model.Items[i].Id"><h6 class="mb-0">@Model.Items[i].OilName @Model.Items[i].Capacity л</h6></a>
+                                            </div>
+
+                                            <div class="col my-auto"> <small><b>Кількість:</b> @Model.Items[i].Count</small></div>
+                                            <div class="col my-auto" style="min-width: 150px;">
+                                                @{var price = Model.Items[i].Price * Model.Items[i].Count;}
+                                                <h6 class="mb-0"><b>Ціна:</b><span name="price"> @price</span>₴</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="col mt-4">
+                <div class="row justify-content-between">
+                    <div class="col-auto">
+                        <p class="mb-1 text-dark"><b>Інформація про замовлення</b></p>
+                    </div>
+                    <div class="flex-sm-col text-right col gl">
+                        <p class="mb-1" style="font-size: 18px;"><b>Всього: </b><span id="total">0</span></p>
+                    </div>
+
+                </div>
+                <div class="row invoice ">
+                    <div class="col">
+                        <p class="mb-1"><b>Отримувач:</b> @Model.RecieverName</p>
+                        <p class="mb-1"><b>Номер телефону:</b> @Model.PhoneNumber</p>
+                        <p class="mb-1"><b>Пошта замовника:</b> @Model.Email</p>
+                        <p class="mb-1"><b>Дата замовлення:</b> @Model.Date</p>
+                        <p class="mb-1"><b>Населений пункт:</b> @Model.City</p>
+                        <p class="mb-1"><b>Адрес відділення:</b> @Model.Address</p>
+                        @if (!Model.Status.Contains("В обробці"))
+                        {
+                            <p class="mb-1"><b>Номер декларації:</b> @Model.DeclarationNumber</p>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div style="float: right; margin-top: 20px;">
+                @{ bool isEnough = true; }
+                @using (@Html.BeginForm("repeatorder", "order", FormMethod.Get))
+                {
+                    for (int i = 0; i < Model.Items.Length; i++)
+                    {
+                        @Html.HiddenFor(model => Model.Items[i].Id)
+                        @Html.HiddenFor(model => Model.Items[i].OilName)
+                        @Html.HiddenFor(model => Model.Items[i].Capacity)
+                        @Html.HiddenFor(model => Model.Items[i].MaxCount)
+                        @Html.HiddenFor(model => Model.Items[i].Count)
+                        @Html.HiddenFor(model => Model.Items[i].Price)
+                        @if (Model.Items[i].Count > Model.Items[i].MaxCount) { isEnough = false; }
+
+                    }
+                    @if (isEnough == false)
+                    {
+                        <button class="btn-again" type="submit" style="background:darkseagreen" disabled>Повторити замовлення</button>
+                        <img src="~/img/Icon-round-Question_mark.svg.png" data-container="body" data-toggle="popover" data-placement="top" data-content="На жаль, ви не можете повторити дане замовлення, оскільки відсутня достатня кількість товару " style="height:20px;margin-left:7px" />
+                    }
+                    else
+                    {
+                        <button class="btn-again" type="submit">Повторити замовлення</button>
+
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    })
+</script>
+<script src="~/js/orderinfo.js"></script>

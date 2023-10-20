@@ -1,0 +1,10 @@
+﻿@media(max-width:475px){
+    tr{
+        min-height:150px;
+
+    }
+    table {
+        max-width: 400px;
+        width: 400px;
+    }
+}

@@ -1,0 +1,116 @@
+﻿#elementContainer .mainContainer {
+    border-collapse: collapse;
+    table-layout: fixed;
+    display: table;
+    width: 100%;
+}
+
+.heading {
+    margin-bottom: 12px;
+    font-size: 16px;
+}
+
+#elementContainer .description .readMore:hover {
+    color: #000000;
+}
+
+#elementContainer .mainContainer .col {
+    vertical-align: middle;
+    display: table-cell;
+    padding: 24px 0;
+    width: 50%;
+}
+
+    #elementContainer .mainContainer .col:first-child {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+#elementContainer #detailText {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 0 24px 24px 24px;
+    font-size: 14px;
+    clear: both;
+}
+
+    #elementContainer #detailText .heading {
+        border-top: 1px solid #e7e8ea;
+        font-family: 'robotobold';
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        padding-top: 36px;
+        font-weight: 800;
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+@media all and (max-width: 1000px) {
+    #elementContainer .mainContainer .col {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 0 24px;
+        display: block;
+        width: 100%;
+    }
+}
+
+.addCart {
+    background: #CD1616;
+    /* line-height: 55px;
+	width: 190px;
+	height: 55px; */
+    border: none;
+    cursor: pointer;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    line-height: 60px;
+    border-radius: 4px;
+    color: #ffffff;
+    height: 60px;
+    font-size: 16px;
+    text-align: center;
+    display: block;
+    text-decoration: none;
+    margin-top: 16px;
+    margin-bottom: 12px;
+    width: 220px;
+}
+
+#mainDiv {
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: none;
+    background-color: #fff;
+    line-height: 21px;
+    margin: 0
+}
+
+h1 {
+    font-weight: 400;
+    text-align: left;
+    margin: 0 0 24px;
+    font-size: 24px;
+    color: #000;
+    display: block
+}
+
+.btn-lg {
+    font-size: 12px;
+    font-weight: 700;
+    font-family: "Lato", Arial, sans-serif;
+    color: #111111;
+    height: 55px;
+    width: 210px;
+    padding-top: 10px;
+    border-radius: 0;
+    text-transform: uppercase;
+    border: 1px solid #919a9e;
+    margin-bottom: 20px;
+}
+
+    .btn-lg :active, :focus {
+        outline-color: #7d7c7c !important;
+    }

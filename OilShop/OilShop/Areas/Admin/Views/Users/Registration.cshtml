@@ -1,0 +1,98 @@
+﻿@model OilShop.Models.RegistrationViewModel;
+@{
+    Layout = null;
+}
+<title>Реєстрація адмін</title>
+<link href="~/css/sign.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css">
+<style>
+    body{
+        min-height:740px;
+    }
+</style>
+<div class="card fat" >
+    <div class="card-body" style="padding-bottom:0!important">
+        <h4 class="card-title">Реєстрація</h4>
+        @using (Html.BeginForm("", "", FormMethod.Post, new { id = "registrationForm", action = "registration" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <label asp-for="Email">Пошта</label>
+                <input asp-for="Email" class="form-control">
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PhoneNumber">Номер телефону</label>
+                <input asp-for="PhoneNumber" placeholder="+380981234456" class="form-control">
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FullName">Ваше ім'я або назва підприємствау</label>
+                <input asp-for="FullName" class="form-control">
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="Password">Пароль</label>
+                <input asp-for="Password" id="password" type="password" class="form-control"><i class="far fa-eye-slash field-icon" id="togglePassword" style=" cursor: pointer;"></i>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="data">
+                <label asp-for="ConfirmPassword" class="control-label">Повторіть пароль</label>
+                <input asp-for="ConfirmPassword" id="confirmPassword" type="password" class="form-control"><i class="far fa-eye-slash field-icon" id="toggleConfirmPassword" style=" cursor: pointer;"></i>
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Роль</label>
+                <div class="col-md-10" style="padding-left:0!important">
+                    <select class="form-control" id="rolename" name="rolename" style="min-width:350px;">
+                        @foreach (var item in ViewBag.Roles)
+                        {
+                            <option>
+                                @item
+                            </option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group mt-2">
+                <button type="submit" class="btn btn-primary btn-block">
+                    Зареєструвати
+                </button>
+            </div>
+
+        }
+        </div>
+</div>
+
+<script>
+    const password = document.querySelector('#password');
+    const confirmPassword = document.querySelector('#confirmPassword');
+
+    document.querySelector('#togglePassword').addEventListener('click', function (e) {
+        if (password.type === "password") {
+            password.type = "text";
+            this.className = 'far fa-eye  field-icon';
+        } else {
+            password.type = "password";
+            this.className = 'far fa-eye-slash  field-icon';
+        }
+    });
+
+    document.querySelector('#toggleConfirmPassword').addEventListener('click', function (e) {
+        if (confirmPassword.type === "password") {
+            confirmPassword.type = "text";
+            this.className = 'far fa-eye  field-icon';
+        } else {
+            confirmPassword.type = "password";
+            this.className = 'far fa-eye-slash  field-icon';
+        }
+    });
+</script>

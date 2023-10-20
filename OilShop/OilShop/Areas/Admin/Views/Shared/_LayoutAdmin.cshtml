@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Fuchs</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="oilDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Мастила
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="oilDropdown">
+                        <a class="dropdown-item" href="/admin/goods/">Переглянути всі</a>
+                        <a class="dropdown-item" href="/admin/goods/create">Додати нове</a>
+                        <a class="dropdown-item dropdown-toggle" role="button" href="#" id="oilItems" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Частини</a>
+                        <div class="dropdown-menu drop-right"  aria-labelledby="oilItems">
+                            <a class="dropdown-item" href="/admin/goodsitems/">Переглянути всі</a>
+                            <a class="dropdown-item" href="/admin/goodsitems/create">Додати нову</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="ordersDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Замовлення
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="ordersDropdown">
+                        <a class="dropdown-item" href="/admin/orders?Status=В обробці">В обробці</a>
+                        <a class="dropdown-item" href="/admin/orders?Status=Відправлено">Відправлено</a>
+                        <a class="dropdown-item" href="/admin/orders?Status=Завершено ">Завершено</a>
+                        @*@Html.RouteLink("Log Off", "MyArea",
+                new { action = "", controller = "orders", Id = 1 })*@
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="oilDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Користувачі
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="oilDropdown">
+                        <a class="dropdown-item" href="/admin/users/registration">Створити нового</a>
+                    </div>
+                </li>
+
+                <li>
+                    <span class="nav-link">Admin world starts here</span>
+                </li>
+
+            </ul>
+            @using (Html.BeginForm("", "", FormMethod.Get, new { id = "sarchForm", action = "/admin/goods" }))
+            {
+<div class="input-group">
+    <input type="text" name="SearchData" class="form-control" placeholder="Пошук">
+    <span class="input-group-btn">
+        <button id="buttonSearch" type="submit" class="btn btn-default clcwb">
+            <img src="~/img/search.svg" alt="search" class="usImg" />
+        </button>
+    </span>
+</div>}
+            @*</form>*@
+        </div>
+    </nav>
+
+    @RenderBody()
+
+    <footer class="border-top footer text-muted">
+        <div class="container text-center">
+            © Авторське право FUCHS 2021
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

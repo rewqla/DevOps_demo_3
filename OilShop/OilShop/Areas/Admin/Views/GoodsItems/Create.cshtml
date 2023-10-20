@@ -1,0 +1,86 @@
+﻿@model OilShop.Models.OilItemCreate
+
+<title>Нове поле адмін</title>
+<link rel="stylesheet" href="/css/resetpassword.css" />
+<div class="modalm-content">
+    <div class="containerm justify-content-around" id="divpas">
+        <h2 style="border-bottom: 1px solid #e5e5e5;padding-bottom:3px;padding-left:16px">Створити нове поле</h2>
+
+        @using (Html.BeginForm("", "", FormMethod.Post, new { id = "createForm", action = "createManafacturer", @class = "find-account__form" }))
+        {
+            <div>
+                <span style="font-size:20px;"><b>@ViewBag.Message</b></span>
+                @if (TempData["message"] != null)
+                {
+                    <div class="alert alert-primary" role="alert">@TempData["message"]</div>
+                }
+            </div>
+            <div class="form-group">
+
+                    <select class="form-control">
+                        @foreach (var item in ViewBag.Items)
+                        {
+                            <option>
+                                @item
+                            </option>
+                        }
+                    </select>
+
+            </div>
+            <div >
+                Введіть інформацію
+            </div>
+            <div class="form-group ">
+                <label class="control-label"></label>
+                <input asp-for="Data" class="form-control" />
+                <span class="text-danger"></span>
+            </div>
+            <div class="find-account__control">
+
+                <button type="submit" class="btn btn--primary login-btn">
+                    Створити
+                </button>
+            </div>
+        }
+    </div>
+
+</div>
+
+
+<script>
+    document.querySelector("select").addEventListener("change", function () {
+        var value = document.querySelector("select").value;
+        if (value == "Рекомендація") {
+            document.getElementById("createForm").action = "createRecomndation";
+        }
+        else {
+            if (value == "Специфікація") {
+                document.getElementById("createForm").action = "createSpecification";
+            }
+            else {
+                if (value == "Тип") {
+                    document.getElementById("createForm").action = "createType";
+                }
+                else {
+                    if (value == "Застосування") {
+                        document.getElementById("createForm").action = "createApplying";
+                    }
+                    else {
+                        if (value == "Об'єм") {
+                            document.getElementById("createForm").action = "createCapacity";
+                        }
+                        else {
+                            if (value == "Виробник") {
+                                document.getElementById("createForm").action = "createManafacturer";
+                            }
+                            else {
+                                document.getElementById("createForm").action = "createTolerance";
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>

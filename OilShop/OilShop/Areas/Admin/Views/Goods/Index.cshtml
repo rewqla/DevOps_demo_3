@@ -1,0 +1,63 @@
+﻿@model IEnumerable<OilShop.Models.OilViewModel>;
+<title>Товари адмін</title>
+
+@if (Model.Count() == 0)
+{
+    <div style="height:100PX"></div>
+    <div class="flex-column text-center ">
+        <img style="width:100%;max-width:700px" alt="nothing was found" src="~/img/ufo.jpg" />
+        <h4 class="col p-2 mt-5">На жаль, ми нічого не знайшли </h4>
+    </div>
+    <div style="height:100PX"></div>
+}
+
+else
+{
+    <div class="p-4" style=" margin-bottom: 40px;">
+        @if (TempData["message"] != null)
+        {
+            <div class="alert alert-primary" role="alert">@TempData["message"]</div>
+        }
+        <table width="100%" class="table table-striped " id="table1">
+            <thead>
+                <tr>
+                    <th>Номер</th>
+                    <th>Назва</th>
+                    <th>Виробник</th>
+                    <th>Кількість</th>
+                    <th>Дії</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="tb1">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td style="width:15%">@item.Id</td>
+                        <td style="width:50%">
+                            <a asp-controller="oil" asp-action="details" asp-route-id="@item.Id" asp-route-Email="@User.Identity.Name">
+                                @item.Name @item.Capacity л
+                            </a>
+                        </td>
+                        <td style="width:15%">@item.Manafacturer </td>
+                        <td style="width:10%">@item.Count шт</td>
+                        <td style="width:10%" class=row>
+                            <a href="/admin/goods/update/@item.Id" class="pr-2">
+                                Змінити
+                            </a>
+                            @if (item.IsUsed == false)
+                            {
+                                @using (Html.BeginForm("", "", FormMethod.Post, new { action = "goods/delete", id = "deleteForm" }))
+                                {
+                                    <button type="submit" class="btn btn-link" style="padding:0">Видалити</button>
+                                    @Html.Hidden("Id", item.Id)
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

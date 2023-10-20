@@ -1,0 +1,307 @@
+﻿@model OilShop.Models.OilFullInfoViewModel
+@using Newtonsoft.Json
+
+<title>"Оновити @Model.Name</title>
+@section Styles {
+    <link href="~/lib/cropperjs/cropper.min.css" rel="stylesheet" />
+}
+<style>
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+        padding-left: 5px !important;
+        padding-right: 8px !important;
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        margin-left: 8px !important;
+    }
+
+    select {
+        min-width: 420px;
+    }
+</style>
+
+
+<div class="col"style="margin-bottom:50px">
+    <h3>Заповніть всі поля, щоб оновити масло</h3>
+    <div class="col-md-4">
+        @using (Html.BeginForm("", "", FormMethod.Post, new { id = "FormUpdate", action = "update" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.Id)
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" value="@Model.Name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="data">
+                <label asp-for="PhotoBase64" class="control-label"></label>
+                <input asp-for="PhotoBase64" class="invisible" />
+                @if (Model.PhotoBase64.Contains("Uploads"))
+                {
+                    <img class="cursor-pointer" src="~/@Model.PhotoBase64" alt="Oil image" width="200" id="oilImage" />
+
+                }
+                else
+                {
+                    <img class="cursor-pointer" src="@Model.PhotoBase64" alt="Oil image" width="200" id="oilImage" />
+                }
+                <span asp-validation-for="PhotoBase64" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Capacity" class="control-label"></label>
+                <div class="col-md-10" style="padding-left: 0 !important">
+                    <select class="form-control" asp-for="Capacity">
+                        @foreach (var item in ViewBag.Capacities)
+                        {
+                            @if (item.ToString() == Model.Capacity)
+                            {
+                                <option selected>
+                                    @item
+                                </option>
+                            }
+                            else
+                            {
+
+                                <option>
+                                    @item
+                                </option>
+                            }
+                        }
+                    </select>
+                    <span asp-validation-for="Capacity" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Type" class="control-label"></label>
+                <div class="col-md-10" style="padding-left: 0 !important">
+                    <select class="form-control" asp-for="Type">
+                        @foreach (var item in ViewBag.Types)
+                        {
+                            @if (item == Model.Type)
+                            {
+                                <option selected>
+                                    @item
+                                </option>
+                            }
+
+                            else
+                            {
+                                <option>
+                                    @item
+                                </option>
+                            }
+                        }
+                    </select>
+                    <span asp-validation-for="Type" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Applying" class="control-label"></label>
+                <div class="col-md-10" style="padding-left: 0 !important">
+                    <select class="form-control" asp-for="Applying">
+                        @foreach (var item in ViewBag.Applyings)
+                        {
+                            <option>
+                                @item
+                            </option>
+                            if (Model != null)
+                            {
+                                @if (item == Model.Applying)
+                                {
+                                    <option selected>
+                                        @item
+                                    </option>
+                                }
+                            }
+                        }
+                    </select>
+                    <span asp-validation-for="Type" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Manafacturer" class="control-label"></label>
+                <div class="col-md-10" style="padding-left: 0 !important">
+                    <select class="form-control" asp-for="Manafacturer">
+                        @foreach (var item in ViewBag.Manafacturers)
+                        {
+                            <option>
+                                @item
+                            </option>
+                            if (Model != null)
+                            {
+                                @if (item == Model.Manafacturer)
+                                {
+                                    <option selected>
+                                        @item
+                                    </option>
+                                }
+                            }
+                        }
+                    </select>
+                    <span asp-validation-for="Manafacturer" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" value="@Model.Price" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <div class="form-group ">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" style="height: 150px;" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Count" class="control-label"></label>
+                <input asp-for="Count" class="form-control" value="@Model.Count" />
+                <span asp-validation-for="Count" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="SelectedTolerances" class="control-label"></label><br />
+                <select asp-for="SelectedTolerances" asp-items="ViewBag.Tolerances" class="custom-select mt-5 pt-3 multiple search selection"></select>
+                <span asp-validation-for="SelectedTolerances" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SelectedSpecifications" class="control-label"></label><br />
+                <select asp-for="SelectedSpecifications" asp-items="ViewBag.Specifications" class="custom-select mt-5 pt-3 multiple search selection"></select>
+                <span asp-validation-for="SelectedSpecifications" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SelectedRecommndations" class="control-label"></label><br />
+                <select asp-for="SelectedRecommndations" asp-items="ViewBag.Recommndations" class="custom-select mt-5 pt-3 multiple search selection"></select>
+                <span asp-validation-for="SelectedRecommndations" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-primary">Оновити</button>
+            </div>
+            <div style="height:30px"></div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    @*get model in js
+    var data = @Html.Raw(JsonConvert.SerializeObject(this.Model));*@
+    if (@Html.Raw(JsonConvert.SerializeObject(@ViewBag.IsUsed))== true) {
+        document.getElementById("FormUpdate").addEventListener("submit", Back);
+        function Back() {
+            document.getElementById("FormUpdate").querySelectorAll("input").forEach(number => {
+                if (number.id != "Price" && number.id != "Count") {
+                    number.disabled = false;
+                }
+
+            });
+            document.getElementById("FormUpdate").querySelectorAll("select").forEach(number => {
+                number.disabled = false;
+            });
+            document.getElementById("FormUpdate").querySelector("textarea").disabled = false;
+        }
+        document.getElementById("FormUpdate").querySelectorAll("input").forEach(number => {
+            if (number.id != "Price" && number.id != "Count") {
+                number.disabled = true;
+            }
+
+        });
+        document.getElementById("FormUpdate").querySelectorAll("select").forEach(number => {
+            number.disabled = true;
+        });
+        document.getElementById("FormUpdate").querySelector("img").id = "img";
+        document.getElementById("FormUpdate").querySelector("textarea").disabled = true;
+
+    }
+</script>
+
+<div class="modal" id="copperModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Ваше фото</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="userphoto">
+                    <div class="gravatar-wrapper-128">
+                        <img src="~/img/photo-camera.svg" alt="Oil mage" id="imageEdited" height="400" />
+                        <a href="#" class="btn btn-danger" id="rotateImage">Повернути</a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Скасувати</button>
+                <button type="button" class="btn btn-primary" id="cropedImage" data-dismiss="modal">Обрати фото для порофілю</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/lib/cropperjs/cropper.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.custom-select').select2();
+        });
+    </script>
+    <script>
+        $(function () {
+            var userImage = $("#oilImage");
+            var uploader;
+            var cropper = null;
+            userImage.on("click", function () {
+                if (cropper == null) {
+                    //Запуск пропера
+                    const imageEdited = document.getElementById("imageEdited");
+                    cropper = new Cropper(imageEdited, {
+                        aspectRatio: 1 / 1,
+                        viewMode: 1,
+                        autoCropArea: 1
+                    });
+                    //обрізаємо фото
+                    $("#cropedImage").on("click", function (e) {
+                        e.preventDefault();
+                        var imgContent = cropper.getCroppedCanvas().toDataURL();
+                        userImage.attr("src", imgContent);
+                        $("#PhotoBase64").val(imgContent);
+                        $('#copperModal').modal('hide');
+                    });
+
+                }
+                if (uploader) {
+                    uploader.remove();
+                }
+                uploader = $('<input type="file" accept="image/*" />');
+                uploader.click();
+                uploader.on('change', function () {
+                    var reader = new FileReader();
+                    reader.onload = function (event) {
+                        //Фото яке ви обрали
+                        var imageSelect = event.target.result;
+                        //$("#imageEdited").attr("src", imageSelect);
+                        cropper.replace(imageSelect); //Кропер міняє зображення на яке вказує
+                        $('#copperModal').modal('show');
+                    }
+                    reader.readAsDataURL(uploader[0].files[0]);
+
+                });
+            });
+        });
+    </script>
+}
