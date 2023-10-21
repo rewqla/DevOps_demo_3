@@ -93,6 +93,11 @@ namespace OilShop
             app.UseAuthentication();
             app.UseAuthorization();
 
+            using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                scope.ServiceProvider.GetService<ApplicationDbContext>().Database.Migrate();
+            }
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -101,7 +106,7 @@ namespace OilShop
                 endpoints.MapControllerRoute(
                            name: "MyArea",
                          pattern: "{area:exists}/{controller=Goods}/{action=Index}/{id?}");
-  
+
             });
 
             SeederDB.SeedData(app.ApplicationServices, env, this.Configuration);
