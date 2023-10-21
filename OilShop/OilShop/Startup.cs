@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OilShop.Entities;
+using OilShop.Helpers;
 using OilShop.Models;
 using OilShop.Repo.Implement;
 using OilShop.Repo.Interfaces;
@@ -29,7 +30,7 @@ namespace OilShop
             services.AddControllersWithViews();
 
             services.AddDbContext<ApplicationDbContext>(opt =>
-                    opt.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
+                    opt.UseMySql(ConnenctionStringHelper.GenerateConnectionString()));
 
             services.AddIdentity<DbUser, DbRole>(options =>
             {
