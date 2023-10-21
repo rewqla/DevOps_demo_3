@@ -33,7 +33,7 @@ resource "aws_security_group" "rds_sg" {
 
 resource "aws_db_instance" "rds_db" {
   allocated_storage    = 15
-  identifier           = "apple-store-db"
+  identifier           = "oil-shop-db"
   db_name              = local.db_creds.DbName
   engine               = "mysql"
   engine_version       = "5.7"
