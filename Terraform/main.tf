@@ -22,3 +22,7 @@ module "rds" {
     security_group_id = module.security_groups.rds_security_group_id
     subnet_group_id = module.subnets.rds_subnet_id
 }
+
+module "ecr" {
+    source = "./modules/ecr"
+}
