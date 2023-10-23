@@ -1,4 +1,4 @@
 variable "repository_name" {
   type = string
-  default = "OilShop-repository"
+  default = "oilshop-repository"
 }

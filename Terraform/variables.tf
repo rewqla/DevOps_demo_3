@@ -1,4 +1,4 @@
-variable "enviroment" {
+variable "environment" {
   type    = string
   default = "development"
 }
