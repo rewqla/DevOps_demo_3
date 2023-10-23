@@ -7,5 +7,5 @@ output "private_subnet_ids" {
 }
 
 output "rds_subnet_id"{
-    value = aws_db_subnet_group.subnet.id
+  value = aws_db_subnet_group.subnet.id
 }
