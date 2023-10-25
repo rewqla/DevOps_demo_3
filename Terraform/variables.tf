@@ -7,3 +7,18 @@ variable "vpc_cidr_block" {
   type = string
   default = "10.0.0.0/16"
 }
+
+variable "service_name" {
+  default = "OilShop"
+  type = string
+}
+
+variable "container_port" {
+  default = 80
+  type = string
+}
+
+variable "host_port" {
+  default = 8080
+  type = string
+}

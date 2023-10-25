@@ -48,3 +48,30 @@ module "dns"{
     lb_dns_name = module.load_balancer.dns_name
     lb_zone_id = module.load_balancer.zone_id
 }
+
+module "ecs_cluster"{
+    source = "./modules/ecs/cluster"
+    environment = var.environment
+}
+
+module "ecs_service" {
+    source = "./modules/ecs/service"
+    environment = var.environment
+    cluster_id = module.ecs_cluster.ecs_cluster_id
+    task_definition_arn = module.ecs_task_definition.arn
+    security_groups_id = module.security_groups.ecs_security_group_id
+    private_subnets = module.subnets.private_subnet_ids
+    service_name=var.service_name
+    container_port = var.container_port
+    lb_service_target_group_arn=module.load_balancer.service_target_group_arn
+}
+
+module "ecs_task_definition" {
+  source = "./modules/ecs/task_definition"
+  environment = var.environment
+  db_host = module.rds.db_instance_endpoint
+  ecr_repository_url = module.ecr.repository_url
+  service_name=var.service_name
+  host_port = var.host_port
+  container_port = var.container_port
+}
