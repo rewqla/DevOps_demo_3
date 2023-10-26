@@ -1,3 +1,6 @@
+variable "namespace" {
+}
+
 variable "environment" {
 }
 

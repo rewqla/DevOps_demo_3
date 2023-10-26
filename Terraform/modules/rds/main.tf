@@ -20,5 +20,4 @@ resource "aws_db_instance" "rds_db" {
     db_subnet_group_name = var.subnet_group_id
     vpc_security_group_ids = [var.security_group_id]
     skip_final_snapshot  = true
-    /* publicly_accessible =  false */
 }

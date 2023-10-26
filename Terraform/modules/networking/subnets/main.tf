@@ -9,7 +9,7 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "${var.environment}-${data.aws_availability_zones.available.names[count.index]}-public-subnet"
+    Name = "${var.namespace}-public-subnet-${count.index}-${var.environment}"
   }
 }
 
@@ -21,7 +21,7 @@ resource "aws_route_table" "public" {
     gateway_id = var.internet_gateway_id
   }
   tags = {
-    Name = "${var.environment}-public-route-table"
+    Name = "${var.namespace}-public-route-table-${var.environment}"
   }
 }
 
@@ -42,7 +42,7 @@ resource "aws_eip" "nat_eip" {
   count = var.az_count
 
   tags = {
-    Name = "${var.environment}-nat-gateway-eip-${count.index}"
+    Name = "${var.namespace}-nat-gateway-eip-${count.index}-${var.environment}"
   }
 }
 
@@ -52,7 +52,7 @@ resource "aws_nat_gateway" "nat" {
   allocation_id = aws_eip.nat_eip[count.index].id
 
   tags = {
-    Name = "${var.environment}-nat-gateway"
+    Name = "${var.namespace}-nat-gateway-${var.environment}"
   }
 }
 
@@ -65,7 +65,7 @@ resource "aws_subnet" "private" {
   map_public_ip_on_launch = false
 
   tags = {
-    Name = "${var.environment}-private-subnet-${count.index}"
+    Name = "${var.namespace}-private-subnet-${count.index}-${var.environment}"
   }
 }
 
@@ -78,7 +78,7 @@ resource "aws_route_table" "private" {
     nat_gateway_id = aws_nat_gateway.nat[count.index].id
   }
   tags = {
-    Name = "${var.environment}-private-route-table"
+    Name = "${var.namespace}-private-route-table-${var.environment}"
   }
 }
 
@@ -93,6 +93,6 @@ resource "aws_db_subnet_group" "subnet" {
   subnet_ids = aws_subnet.private[*].id
 
   tags = {
-     Name = "${var.environment}-rds-subnet"
+     Name = "${var.namespace}-rds-subnet-${var.environment}"
   }
 }

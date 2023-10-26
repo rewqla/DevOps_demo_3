@@ -1,12 +1,14 @@
 
 module "vpc" {
     source = "./modules/networking/vpc"
+    namespace = var.namespace
     environment = var.environment
     vpc_cidr_block = var.vpc_cidr_block
 }
 
 module "subnets" {
     source = "./modules/networking/subnets"
+    namespace = var.namespace
     environment = var.environment
     vpc_id = module.vpc.vpc_id
     internet_gateway_id = module.vpc.internet_gateway_id
@@ -15,6 +17,7 @@ module "subnets" {
 
 module "security_groups" {
     source = "./modules/networking/security_groups"
+    namespace = var.namespace
     environment = var.environment
     vpc_id = module.vpc.vpc_id
     container_port = var.container_port
@@ -38,6 +41,7 @@ module "bastion_host" {
 
 module "load_balancer" {
     source = "./modules/networking/load_balancer"
+    namespace = var.namespace
     vpc_id = module.vpc.vpc_id
     environment = var.environment
     subnets = module.subnets.public_subnet_ids
@@ -53,16 +57,19 @@ module "dns"{
 
 module "ecs_cluster"{
     source = "./modules/ecs/cluster"
+    namespace = var.namespace
     environment = var.environment
 }
 
 module "iam_role" {
     source ="./modules/ecs/iam_role"
+    namespace = var.namespace
     environment = var.environment
 }
 
 module "ecs_service" {
     source = "./modules/ecs/service"
+    namespace = var.namespace
     environment = var.environment
     cluster_id = module.ecs_cluster.ecs_cluster_id
     task_definition_arn = module.ecs_task_definition.arn
@@ -74,13 +81,14 @@ module "ecs_service" {
 }
 
 module "ecs_task_definition" {
-  source = "./modules/ecs/task_definition"
-  environment = var.environment
-  db_host = module.rds.db_instance_endpoint
-  ecr_repository_url = module.ecr.repository_url
-  service_name=var.service_name
-  host_port = var.host_port
-  container_port = var.container_port
-  ecs_execution_role_arn = module.iam_role.ecs_execution_role_arn
-  ecs_task_iam_role_arn=module.iam_role.ecs_task_iam_role_arn
+    source = "./modules/ecs/task_definition"
+    namespace = var.namespace
+    environment = var.environment
+    db_host = module.rds.db_instance_endpoint
+    ecr_repository_url = module.ecr.repository_url
+    service_name=var.service_name
+    host_port = var.host_port
+    container_port = var.container_port
+    ecs_execution_role_arn = module.iam_role.ecs_execution_role_arn
+    ecs_task_iam_role_arn=module.iam_role.ecs_task_iam_role_arn
 }

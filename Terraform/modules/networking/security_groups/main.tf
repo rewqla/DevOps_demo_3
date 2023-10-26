@@ -1,5 +1,5 @@
 resource "aws_security_group" "rds_security_group" {
-  name = "${var.environment}-rds-security-group"
+  name = "${var.namespace}-rds-security-group-${var.environment}"
   description = "RDS Security Group"
   vpc_id      = var.vpc_id
 
@@ -18,12 +18,12 @@ resource "aws_security_group" "rds_security_group" {
   }
 
   tags = {
-    Name = "${var.environment}-rds-security-group"
+    Name = "${var.namespace}-rds-security-group-${var.environment}"
   }
 }
 
 resource "aws_security_group" "bastion_host" {
-  name        = "${var.environment}-bastion-host-security-group"
+  name        = "${var.namespace}-bastion-host-security-group-${var.environment}"
   description = "Bastion host Security Group"
   vpc_id      = var.vpc_id
 
@@ -42,12 +42,12 @@ resource "aws_security_group" "bastion_host" {
   }
 
   tags = {
-    Name = "${var.environment}-bastion-host-security-group"
+    Name = "${var.namespace}-bastion-host-security-group-${var.environment}"
   }
 }
 
 resource "aws_security_group" "load_balancer" {
-  name        = "${var.environment}-load-balancer-security-group"
+  name        = "${var.namespace}-load-balancer-security-group-${var.environment}"
   vpc_id      = var.vpc_id
 
   ingress {
@@ -72,12 +72,12 @@ resource "aws_security_group" "load_balancer" {
   }
 
   tags = {
-    Name     = "${var.environment}-load-balancer-security-group"
+    Name     = "${var.namespace}-load-balancer-security-group-${var.environment}"
   }
 }
 
 resource "aws_security_group" "ecs_tasks" {
-  name        = "ecs-security-group-${var.environment}"
+  name        = "${var.namespace}-ecs-security-group-${var.environment}"
   vpc_id      = var.vpc_id
 
   ingress {
@@ -103,6 +103,6 @@ resource "aws_security_group" "ecs_tasks" {
   }
 
   tags = {
-    Name     = "ecs-security-group-${var.environment}"
+    Name     = "${var.namespace}-ecs-security-group-${var.environment}"
   }
 }

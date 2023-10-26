@@ -1,5 +1,5 @@
 resource "aws_iam_role" "ecs_service_role" {
-  name               = "ECS_ServiceRole_${var.environment}"
+  name               = "${var.namespace}-ECS_ServiceRole_${var.environment}"
   assume_role_policy = data.aws_iam_policy_document.ecs_service_policy.json
 }
 
@@ -16,7 +16,7 @@ data "aws_iam_policy_document" "ecs_service_policy" {
 }
 
 resource "aws_iam_role_policy" "ecs_service_role_policy" {
-  name   = "ECS_ServiceRolePolicy_${var.environment}"
+  name   = "${var.namespace}-ECS_ServiceRolePolicy_${var.environment}"
   policy = data.aws_iam_policy_document.ecs_service_role_policy.json
   role   = aws_iam_role.ecs_service_role.id
 }
@@ -44,7 +44,7 @@ data "aws_iam_policy_document" "ecs_service_role_policy" {
 }
 
 resource "aws_iam_role" "ecs_task_execution_role" {
-  name               = "ECS_TaskExecutionRole_${var.environment}"
+  name               = "${var.namespace}-ECS_TaskExecutionRole_${var.environment}"
   assume_role_policy = data.aws_iam_policy_document.task_assume_role_policy.json
 }
 
@@ -65,6 +65,6 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_policy" {
 }
 
 resource "aws_iam_role" "ecs_task_iam_role" {
-  name               = "ECS_TaskIAMRole_${var.environment}"
+  name               = "${var.namespace}-ECS_TaskIAMRole_${var.environment}"
   assume_role_policy = data.aws_iam_policy_document.task_assume_role_policy.json
 }

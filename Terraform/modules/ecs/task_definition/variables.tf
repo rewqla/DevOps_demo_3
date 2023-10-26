@@ -1,3 +1,6 @@
+variable "namespace" {
+}
+
 variable "container_port" {
 }
 

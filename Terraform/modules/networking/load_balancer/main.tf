@@ -1,11 +1,11 @@
 resource "aws_alb" "lb" {
-  name = "${var.environment}-load-balancer"
+  name = "${var.namespace}-alb-${var.environment}"
   security_groups = [var.security_group_id]
   subnets = var.subnets
 }
 
 resource "aws_alb_target_group" "target_group" {
-  name                 = "${var.environment}-target-group"
+  name                 = "${var.namespace}-target-group-${var.environment}"
   port                 = 80
   protocol             = "HTTP"
   vpc_id               = var.vpc_id

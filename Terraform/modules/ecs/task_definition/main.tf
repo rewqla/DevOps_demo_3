@@ -13,7 +13,7 @@ resource "aws_ecs_task_definition" "default" {
   requires_compatibilities = ["FARGATE"]
   cpu          = var.cpu_units
   memory       = var.memory
-  family                   = "ecs-task-definition${var.environment}"
+  family                   = "${var.namespace}-ecs-task-definition-${var.environment}"
   execution_role_arn = var.ecs_execution_role_arn
   task_role_arn      = var.ecs_task_iam_role_arn
   

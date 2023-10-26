@@ -1,7 +1,7 @@
 resource "aws_ecs_cluster" "default" {
-    name = "ecs-cluster-${var.environment}"
+    name = "${var.namespace}-ecs-cluster-${var.environment}"
 
     tags = {
-        Name = "ecs-cluster-${var.environment}"
+        Name = "${var.namespace}-ecs-cluster-${var.environment}"
     }
 }

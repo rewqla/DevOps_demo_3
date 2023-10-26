@@ -1,3 +1,8 @@
+variable "namespace" {
+  default = "OilShop"
+  type = string
+}
+
 variable "environment" {
   type    = string
   default = "development"
