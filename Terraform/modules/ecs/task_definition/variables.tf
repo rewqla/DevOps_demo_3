@@ -16,12 +16,12 @@ variable "db_host" {
 }
 
 variable "cpu_units" {
-  default     = 100
+  default     = 256
   type        = number
 }
 
 variable "memory" {
-  default     = 256
+  default     = 512
   type        = number
 }
 

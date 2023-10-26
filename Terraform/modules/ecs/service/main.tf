@@ -14,7 +14,7 @@ resource "aws_ecs_service" "service" {
   }
 
   network_configuration {
-    security_groups  = [var.security_groups_id]
+    security_groups  =  [var.security_groups_id]
     subnets          =  var.private_subnets
   }
 

@@ -3,8 +3,8 @@ variable "domain_name" {
   default = "nova-linka2.pp.ua"
 }
 
-variable "lb_dns_name" {
+variable "lb_zone_id" {
 }
 
-variable "lb_zone_id" {
+variable "dns_name" {
 }

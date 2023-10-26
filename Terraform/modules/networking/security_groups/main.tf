@@ -48,7 +48,6 @@ resource "aws_security_group" "bastion_host" {
 
 resource "aws_security_group" "load_balancer" {
   name        = "${var.environment}-load-balancer-security-group"
-  description = "Security group for a the load balancer"
   vpc_id      = var.vpc_id
 
   ingress {
@@ -77,15 +76,15 @@ resource "aws_security_group" "load_balancer" {
   }
 }
 
-resource "aws_security_group" "ecs" {
+resource "aws_security_group" "ecs_tasks" {
   name        = "ecs-security-group-${var.environment}"
   vpc_id      = var.vpc_id
 
   ingress {
-    from_port       = 80
-    to_port         = 80
+    from_port       = var.container_port
+    to_port         = var.container_port
     protocol        = "tcp"
-    security_groups = [aws_security_group.load_balancer.id]
+    security_groups = [aws_security_group.load_balancer.id ]
   }
 
   ingress {

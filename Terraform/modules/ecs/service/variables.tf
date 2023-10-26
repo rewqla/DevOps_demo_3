@@ -8,7 +8,7 @@ variable "task_definition_arn" {
 }
 
 variable "ecs_task_desired_count" {
-  default     = 1
+  default     = 2
   type        = number
 }
 
@@ -18,7 +18,7 @@ variable "ecs_task_deployment_minimum_healthy_percent" {
 }
 
 variable "ecs_task_deployment_maximum_percent" {
-  default     = 100
+  default     = 200
   type        = number
 }
 

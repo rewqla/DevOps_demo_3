@@ -1,4 +1,3 @@
-# Use the ASP.NET Core runtime as a parent image
 FROM mcr.microsoft.com/dotnet/aspnet:3.1 AS base
 WORKDIR /app
 EXPOSE 80

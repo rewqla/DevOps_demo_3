@@ -15,10 +15,10 @@ variable "service_name" {
 
 variable "container_port" {
   default = 80
-  type = string
+  type = number
 }
 
 variable "host_port" {
   default = 8080
-  type = string
+  type = number
 }

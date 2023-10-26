@@ -6,7 +6,6 @@ variable "subnets" {
 }
 
 variable "acm_certificate" {
-  
 }
 
 variable "environment" {

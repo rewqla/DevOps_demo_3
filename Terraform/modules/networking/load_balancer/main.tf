@@ -1,16 +1,37 @@
-resource "aws_lb" "lb" {
+resource "aws_alb" "lb" {
   name = "${var.environment}-load-balancer"
   security_groups = [var.security_group_id]
   subnets = var.subnets
 }
 
-resource "aws_lb_listener" "http_listener" {
-  load_balancer_arn = aws_lb.lb.arn
+resource "aws_alb_target_group" "target_group" {
+  name                 = "${var.environment}-target-group"
+  port                 = 80
+  protocol             = "HTTP"
+  vpc_id               = var.vpc_id
+  deregistration_delay = 5
+  target_type = "ip"
+
+  health_check {
+    path                = "/"
+    matcher             = "200-299"  
+    port                = "traffic-port"
+    protocol            = "HTTP"  
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 60
+    interval            = 120
+  }
+}
+
+resource "aws_alb_listener" "http" {
+  load_balancer_arn = aws_alb.lb.arn
   port = 80
   protocol = "HTTP"
 
   default_action {
     type = "redirect"
+
     redirect {
       port = "443"
       protocol = "HTTPS"
@@ -19,8 +40,8 @@ resource "aws_lb_listener" "http_listener" {
   }
 }
 
-resource "aws_lb_listener" "https_listener" {
-  load_balancer_arn = aws_lb.lb.arn
+resource "aws_alb_listener" "https" {
+  load_balancer_arn = aws_alb.lb.arn
   port = 443
   protocol = "HTTPS"
   ssl_policy = "ELBSecurityPolicy-2016-08"
@@ -28,23 +49,6 @@ resource "aws_lb_listener" "https_listener" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.target_group.arn
-  }
-}
-
-resource "aws_lb_target_group" "target_group" {
-  name                 = "${var.environment}-target-group"
-  port                 = 80
-  protocol             = "HTTP"
-  vpc_id               = var.vpc_id
-
-  health_check {
-    path                = "/"
-    port                = "traffic-port"
-    protocol            = "HTTP"  
-    healthy_threshold   = 3
-    unhealthy_threshold = 3
-    timeout             = 10
-    interval            = 60
+    target_group_arn = aws_alb_target_group.target_group.arn
   }
 }

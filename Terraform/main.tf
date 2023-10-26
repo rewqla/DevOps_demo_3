@@ -10,12 +10,14 @@ module "subnets" {
     environment = var.environment
     vpc_id = module.vpc.vpc_id
     internet_gateway_id = module.vpc.internet_gateway_id
+    vpc_cidr_block=var.vpc_cidr_block
 }
 
 module "security_groups" {
     source = "./modules/networking/security_groups"
     environment = var.environment
     vpc_id = module.vpc.vpc_id
+    container_port = var.container_port
 }
 
 module "rds" {
@@ -45,8 +47,8 @@ module "load_balancer" {
 
 module "dns"{
     source = "./modules/networking/dns"
-    lb_dns_name = module.load_balancer.dns_name
     lb_zone_id = module.load_balancer.zone_id
+    dns_name = module.load_balancer.dns_name
 }
 
 module "ecs_cluster"{

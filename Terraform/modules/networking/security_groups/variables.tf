@@ -5,3 +5,7 @@ variable "vpc_id" {
 variable "environment" {
   type = string
 }
+
+variable "container_port"{
+  
+}
