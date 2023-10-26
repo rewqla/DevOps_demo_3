@@ -37,3 +37,11 @@ variable "hash" {
 variable "ecr_repository_url" {
   
 }
+
+variable "ecs_execution_role_arn" {
+  
+}
+
+variable "ecs_task_iam_role_arn" {
+  
+}

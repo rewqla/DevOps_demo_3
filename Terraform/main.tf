@@ -56,6 +56,11 @@ module "ecs_cluster"{
     environment = var.environment
 }
 
+module "iam_role" {
+    source ="./modules/ecs/iam_role"
+    environment = var.environment
+}
+
 module "ecs_service" {
     source = "./modules/ecs/service"
     environment = var.environment
@@ -76,4 +81,6 @@ module "ecs_task_definition" {
   service_name=var.service_name
   host_port = var.host_port
   container_port = var.container_port
+  ecs_execution_role_arn = module.iam_role.ecs_execution_role_arn
+  ecs_task_iam_role_arn=module.iam_role.ecs_task_iam_role_arn
 }
