@@ -1,1 +1,1 @@
-# DevOps_demo_3
+# DevOps demo project 3 for SoftServe company
