@@ -46,7 +46,7 @@ namespace OilShop.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
@@ -74,6 +74,8 @@ namespace OilShop.Controllers
         }
 
         [HttpPost]
+        [IgnoreAntiforgeryToken]
+
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
@@ -92,7 +94,7 @@ namespace OilShop.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> Registration(RegistrationViewModel model)
         {
             if (ModelState.IsValid)
@@ -132,6 +134,7 @@ namespace OilShop.Controllers
 
 
         [HttpPost]
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> ChangeUserInfo(PersonalInfoViewModel model)
         {
             var user = await _userManager.FindByIdAsync(_userManager.GetUserId(HttpContext.User));
@@ -147,6 +150,7 @@ namespace OilShop.Controllers
         }
 
         [HttpPost]
+        [IgnoreAntiforgeryToken]
 
         public async Task<IActionResult> RequestPasswordReset(PersonalInfoViewModel model)
         {
@@ -175,6 +179,8 @@ namespace OilShop.Controllers
         }
 
         [HttpPost]
+        [IgnoreAntiforgeryToken]
+
         public async Task<ActionResult> ForgotPassword(string Email)
         {
             if (Email != null)

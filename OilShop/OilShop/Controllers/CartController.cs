@@ -34,6 +34,7 @@ namespace OilShop.Controllers
                 return View(model);
             }
         }
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> AddToCart(int OilId, string Email)
         {
             if (Email == null)
@@ -49,7 +50,7 @@ namespace OilShop.Controllers
             }
 
         }
-
+        [IgnoreAntiforgeryToken]
         public ActionResult DeleteFromCart(int OilId)
         {
             _cartService.DeleteItem(OilId, _userManager.FindByIdAsync(_userManager.GetUserId(HttpContext.User)).Result.Id);
