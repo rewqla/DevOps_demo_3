@@ -31,6 +31,7 @@ resource "aws_ecs_task_definition" "default" {
           protocol      = "tcp"
         }
       ]
+
        environment : [
         {
           name : "DbName",
@@ -49,6 +50,15 @@ resource "aws_ecs_task_definition" "default" {
           value : local.db_creds.DbPassword
         }
       ]
+
+      logConfiguration = {
+        logDriver = "awslogs",
+        options   = {
+          "awslogs-group"         = var.log_group_name,
+          "awslogs-region"        = var.region,
+          "awslogs-stream-prefix" = "app"
+        }
+      }
     }
   ])
 }

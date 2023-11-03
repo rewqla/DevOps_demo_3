@@ -1,4 +1,3 @@
-
 module "vpc" {
     source = "./modules/networking/vpc"
     namespace = var.namespace
@@ -67,6 +66,12 @@ module "iam_role" {
     environment = var.environment
 }
 
+module "cloud_watch"{
+    source = "./modules/ecs/cloud_watch"
+    namespace = var.namespace
+    service_name = var.service_name
+}
+
 module "ecs_service" {
     source = "./modules/ecs/service"
     namespace = var.namespace
@@ -84,9 +89,11 @@ module "ecs_task_definition" {
     source = "./modules/ecs/task_definition"
     namespace = var.namespace
     environment = var.environment
+    region=var.region
     db_host = module.rds.db_instance_endpoint
     ecr_repository_url = module.ecr.repository_url
     service_name=var.service_name
+    log_group_name = module.cloud_watch.log_group_name
     host_port = var.host_port
     container_port = var.container_port
     ecs_execution_role_arn = module.iam_role.ecs_execution_role_arn

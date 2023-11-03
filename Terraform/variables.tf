@@ -27,3 +27,8 @@ variable "host_port" {
   default = 8080
   type = number
 }
+
+variable "region" {
+  default = "eu-north-1"
+  type = string
+}

@@ -4,6 +4,14 @@ variable "namespace" {
 variable "container_port" {
 }
 
+variable "region" {
+  
+}
+
+variable "log_group_name" {
+  
+}
+
 variable "host_port" {
 }
 

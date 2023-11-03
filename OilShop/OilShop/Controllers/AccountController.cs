@@ -75,7 +75,6 @@ namespace OilShop.Controllers
 
         [HttpPost]
         [IgnoreAntiforgeryToken]
-
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
