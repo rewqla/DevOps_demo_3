@@ -18,11 +18,6 @@ resource "aws_ecs_service" "service" {
     subnets          =  var.private_subnets
   }
 
-  ordered_placement_strategy {
-    type  = "binpack"
-    field = "memory"
-  }
-
   lifecycle {
     ignore_changes = [desired_count]
   }
