@@ -11,9 +11,9 @@ locals {
 resource "aws_ecs_task_definition" "default" {
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu          = var.cpu_units
+  cpu          = var.cpu_units 
   memory       = var.memory
-  family                   = "${var.namespace}-ecs-task-definition-${var.environment}"
+  family             = "${var.namespace}-ecs-task-definition-${var.environment}"
   execution_role_arn = var.ecs_execution_role_arn
   task_role_arn      = var.ecs_task_iam_role_arn
   
@@ -21,7 +21,7 @@ resource "aws_ecs_task_definition" "default" {
     {
       name         = var.service_name
       image        = "${var.ecr_repository_url}:${var.hash}"
-      cpu          = var.cpu_units
+      cpu          = var.cpu_units - 10
       memory       = var.memory
       essential    = true
       portMappings = [
@@ -50,15 +50,43 @@ resource "aws_ecs_task_definition" "default" {
           value : local.db_creds.DbPassword
         }
       ]
+    },
+    {
+      name      = "datadog-agent" 
+      image     = "datadog/agent:latest"
+      cpu: 10,
+      memory: 256,
+      mountPoints:[],  
+      essential = false  
 
-      logConfiguration = {
-        logDriver = "awslogs",
-        options   = {
-          "awslogs-group"         = var.log_group_name,
-          "awslogs-region"        = var.region,
-          "awslogs-stream-prefix" = "app"
+      environment = [
+        {
+          name  = "DD_API_KEY",
+          value = local.db_creds.DatadogApi
+        },
+        {
+            name: "ECS_FARGATE",
+            value: "true"
+        },
+        {
+            name: "DD_PROCESS_AGENT_ENABLED",
+            value: "true"
+        },
+        {
+            name: "DD_DOGSTATSD_NON_LOCAL_TRAFFIC",
+            value: "true"
         }
-      }
+      ]
     }
   ])
 }
+
+  #  logConfiguration = {
+  #       logDriver = "awslogs"
+  #       options   = {
+  #         "awslogs-group" = "/ecs/datadog-agent"  
+  #         "awslogs-region" = var.region
+  #         "awslogs-stream-prefix" = "datadog-ecs"
+  #         "awslogs-create-group": "true"
+  #       }
+  #     }

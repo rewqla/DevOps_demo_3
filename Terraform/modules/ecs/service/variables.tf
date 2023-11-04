@@ -11,7 +11,7 @@ variable "task_definition_arn" {
 }
 
 variable "ecs_task_desired_count" {
-  default     = 2
+  default     = 1
   type        = number
 }
 
