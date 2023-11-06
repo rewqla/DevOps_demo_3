@@ -66,11 +66,11 @@ module "iam_role" {
     environment = var.environment
 }
 
-# module "cloud_watch"{
-#     source = "./modules/ecs/cloud_watch"
-#     namespace = var.namespace
-#     service_name = var.service_name
-# }
+module "cloud_watch"{
+    source = "./modules/ecs/cloud_watch"
+    namespace = var.namespace
+    service_name = var.service_name
+}
 
 module "ecs_service" {
     source = "./modules/ecs/service"
@@ -94,9 +94,8 @@ module "ecs_task_definition" {
     ecr_repository_url = module.ecr.repository_url
     service_name=var.service_name
     host_port = var.host_port
+    log_group_name = module.cloud_watch.log_group_name
     container_port = var.container_port
     ecs_execution_role_arn = module.iam_role.ecs_execution_role_arn
     ecs_task_iam_role_arn=module.iam_role.ecs_task_iam_role_arn
 }
-
-# log_group_name = module.cloud_watch.log_group_name

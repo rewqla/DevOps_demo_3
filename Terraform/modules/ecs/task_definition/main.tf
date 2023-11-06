@@ -50,6 +50,14 @@ resource "aws_ecs_task_definition" "default" {
           value : local.db_creds.DbPassword
         }
       ]
+      logConfiguration = {
+        logDriver = "awslogs",
+        options   = {
+          "awslogs-group"         = var.log_group_name,
+          "awslogs-region"        = var.region,
+          "awslogs-stream-prefix" = "app"
+        }
+      }
     },
     {
       name      = "datadog-agent" 
@@ -80,13 +88,3 @@ resource "aws_ecs_task_definition" "default" {
     }
   ])
 }
-
-  #  logConfiguration = {
-  #       logDriver = "awslogs"
-  #       options   = {
-  #         "awslogs-group" = "/ecs/datadog-agent"  
-  #         "awslogs-region" = var.region
-  #         "awslogs-stream-prefix" = "datadog-ecs"
-  #         "awslogs-create-group": "true"
-  #       }
-  #     }
