@@ -1,1 +1,1 @@
-# DevOps demo project 3 for SoftServe company
+# The last DevOps demo project for SoftServe Company
